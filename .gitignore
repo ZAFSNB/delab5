@@ -1,0 +1,19 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Ansible
+*.retry
+
+# Прочее
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.log
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,63 @@
+---
+# Основной playbook: базовая настройка узлов кластера Kubernetes.
+# Демонстрирует переменные, модули apt/template/user/command/debug,
+# регистрацию результата и обработчик (handler).
+- name: Базовая настройка узлов кластера
+  hosts: kubernetes_nodes
+  gather_facts: true
+
+  vars:
+    packages:
+      - zsh
+      - curl
+      - git
+      - htop
+      - vim
+
+  tasks:
+    - name: Обновить кэш пакетов apt
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Установить набор пакетов
+      ansible.builtin.apt:
+        name: "{{ packages }}"
+        state: present
+      notify: Проверить motd после установки
+
+    - name: Проверить версию zsh
+      ansible.builtin.command: zsh --version
+      register: zsh_version
+      changed_when: false
+
+    - name: Показать версию zsh
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }}: {{ zsh_version.stdout }}"
+
+    - name: Разложить /etc/motd из шаблона Jinja2
+      ansible.builtin.template:
+        src: templates/motd.j2
+        dest: /etc/motd
+        mode: "0644"
+
+    - name: Прочитать /etc/motd
+      ansible.builtin.command: cat /etc/motd
+      register: motd_content
+      changed_when: false
+
+    - name: Вывести содержимое /etc/motd
+      ansible.builtin.debug:
+        msg: "{{ motd_content.stdout_lines }}"
+
+    - name: Сделать zsh оболочкой по умолчанию для root
+      ansible.builtin.user:
+        name: root
+        shell: /usr/bin/zsh
+
+  handlers:
+    # В контейнерах kind нет systemd, поэтому обработчик не перезапускает
+    # службу, а подтверждает факт изменения конфигурации узла.
+    - name: Проверить motd после установки
+      ansible.builtin.command: cat /etc/motd
+      changed_when: true

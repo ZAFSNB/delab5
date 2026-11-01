@@ -1,0 +1,6 @@
+# Шаблон приветственного сообщения, который раскладывается на все узлы
+Узел кластера: {{ inventory_hostname }}
+Операционная система: {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}
+Ядро: {{ ansible_facts['kernel'] }}
+Адрес: {{ ansible_host }}
+Управляется через Ansible, группа: {{ group_names | join(', ') }}

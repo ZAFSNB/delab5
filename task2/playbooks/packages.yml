@@ -1,0 +1,30 @@
+---
+# Playbook с циклом: установка списка пакетов по одному с проверкой результата.
+- name: Установка дополнительных пакетов (цикл)
+  hosts: kubernetes_nodes
+  gather_facts: false
+
+  vars:
+    extra_packages:
+      - htop
+      - vim
+      - tree
+
+  tasks:
+    - name: Обновить кэш apt
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Установить пакеты по одному
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ extra_packages }}"
+      register: install_result
+
+    - name: Показать, что изменилось
+      ansible.builtin.debug:
+        msg: "{{ item.item }}: changed={{ item.changed }}"
+      loop: "{{ install_result.results }}"
+      loop_control:
+        label: "{{ item.item }}"

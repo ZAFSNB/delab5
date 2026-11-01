@@ -1,0 +1,48 @@
+---
+# Демонстрация базовых возможностей playbook из руководства
+# «How To Write Ansible Playbooks»: переменные, факты, условия,
+# регистрация вывода, копирование файла.
+- name: Демонстрация возможностей Ansible
+  hosts: kubernetes_nodes
+  gather_facts: true
+
+  vars:
+    greeting: "Привет с control-node"
+    report_path: /tmp/ansible-report.txt
+
+  tasks:
+    - name: Показать значение переменной
+      ansible.builtin.debug:
+        var: greeting
+
+    - name: Показать факты о хосте
+      ansible.builtin.debug:
+        msg: >-
+          {{ ansible_facts['hostname'] }}:
+          {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }},
+          ядро {{ ansible_facts['kernel'] }},
+          vCPU {{ ansible_facts['processor_vcpus'] }}
+
+    - name: Задача только для worker1 (условие when)
+      ansible.builtin.debug:
+        msg: "Эта задача выполняется только на {{ inventory_hostname }}"
+      when: inventory_hostname == 'worker1'
+
+    - name: Создать файл отчёта на узле (модуль copy)
+      ansible.builtin.copy:
+        content: |
+          host: {{ inventory_hostname }}
+          os: {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}
+          kernel: {{ ansible_facts['kernel'] }}
+          python: {{ ansible_facts['python_version'] }}
+        dest: "{{ report_path }}"
+        mode: "0644"
+
+    - name: Прочитать отчёт (register)
+      ansible.builtin.command: cat {{ report_path }}
+      register: report_content
+      changed_when: false
+
+    - name: Вывести содержимое отчёта
+      ansible.builtin.debug:
+        msg: "{{ report_content.stdout_lines }}"
