@@ -503,21 +503,53 @@ worker2                    : ok=6    changed=1    skipped=1
 ## 4. Скриншоты
 
 - `images/01-structure.png` — структура репозитория;
+
+![структура репозитория](images/01-structure.png)
 - `images/02-tf-version.png` — `tf version` (Terraform v1.9.8, провайдер docker v4.6.0);
+
+![tf version (Terraform v1.9.8, провайдер docker v4.6.0)](images/02-tf-version.png)
 - `images/03-tf-code.png` — `main.tf` и `variables.tf`;
+
+![main.tf и variables.tf](images/03-tf-code.png)
 - `images/04-tf-init.png` — `tf init`;
+
+![tf init](images/04-tf-init.png)
 - `images/05-tf-plan.png` — `tf plan` (2 to add);
+
+![tf plan (2 to add)](images/05-tf-plan.png)
 - `images/06-tf-apply.png` — `tf apply` и outputs;
+
+![tf apply и outputs](images/06-tf-apply.png)
 - `images/07-nginx.png` — контейнер в `docker ps` и страница nginx в браузере;
+
+![контейнер в docker ps и страница nginx в браузере](images/07-nginx.png)
 - `images/08-tf-state.png` — `tf output` и `tf state list`;
+
+![tf output и tf state list](images/08-tf-state.png)
 - `images/09-tf-change.png` — изменение порта (`-var external_port=8001`);
+
+![изменение порта (-var external_port=8001)](images/09-tf-change.png)
 - `images/10-tf-destroy.png` — `tf destroy`;
+
+![tf destroy](images/10-tf-destroy.png)
 - `images/11-inventory.png` — `inventory.ini`;
+
+![inventory.ini](images/11-inventory.png)
 - `images/12-ans-ping.png` — `ans all -m ping` (pong от трёх узлов);
+
+![ans all -m ping (pong от трёх узлов)](images/12-ans-ping.png)
 - `images/13-ans-zsh.png` — установка `zsh` ad-hoc командой и проверка версии;
+
+![установка zsh ad-hoc командой и проверка версии](images/13-ans-zsh.png)
 - `images/14-pb-site.png` — выполнение `playbooks/site.yml`;
+
+![выполнение playbooks/site.yml](images/14-pb-site.png)
 - `images/15-pb-packages.png` — выполнение `playbooks/packages.yml`;
+
+![выполнение playbooks/packages.yml](images/15-pb-packages.png)
 - `images/16-pb-demo.png` — выполнение `playbooks/demo.yml`.
+
+![выполнение playbooks/demo.yml.](images/16-pb-demo.png)
 
 ## 5. Ответы на контрольные вопросы
 
